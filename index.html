@@ -27,40 +27,40 @@ const questions = [
   {q:"National animal of India?", a:["Lion","Tiger","Elephant","Leopard"], c:1},
   {q:"Who invented computer?", a:["Newton","Charles Babbage","Edison","Einstein"], c:1},
   {q:"Largest planet?", a:["Earth","Mars","Jupiter","Saturn"], c:2},
-  {q:"Currency of Japan?", a:["Yuan","Won","Yen","Dollar"], c:2},
-  {q:"Fastest land animal?", a:["Lion","Cheetah","Tiger","Horse"], c:1},
-  {q:"Taj Mahal is in?", a:["Delhi","Agra","Jaipur","Lucknow"], c:1},
-  {q:"National bird of India?", a:["Peacock","Parrot","Crow","Eagle"], c:0},
-  {q:"Who is Father of Nation?", a:["Nehru","Gandhi","Patel","Bose"], c:1},
-  {q:"Sun rises in?", a:["West","East","North","South"], c:1}
+  {q:"Currency of Japan?", a:["Yuan","Won","Yen","Dollar"], c:2}
 ];
 
-// Randomize questions
+// shuffle questions
 questions.sort(() => Math.random() - 0.5);
 
-let quizDiv = document.getElementById("quiz");
+const quizDiv = document.getElementById("quiz");
 
-questions.forEach((q,i)=>{
-  quizDiv.innerHTML += `
-    <div class="question">
-      <p>${i+1}. ${q.q}</p>
-      ${q.a.map((opt,j)=>`
-        <label>
-          <input type="radio" name="q${i}" value="${j}"> ${opt}
-        </label><br>`).join("")}
-    </div>`;
+// render questions
+questions.forEach((item, index) => {
+  const block = document.createElement("div");
+  block.className = "question";
+
+  let html = <p>${index + 1}. ${item.q}</p>;
+  item.a.forEach((opt, i) => {
+    html += `
+      <label>
+        <input type="radio" name="q${index}" value="${i}"> ${opt}
+      </label><br>
+    `;
+  });
+
+  block.innerHTML = html;
+  quizDiv.appendChild(block);
 });
 
-// TAB SWITCH DETECTION
+// tab switch detection
 let switchCount = 0;
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     switchCount++;
-    document.getElementById("warning").innerText =
-      "Tab switched: " + switchCount;
-
+    alert("Tab switched! Count: " + switchCount);
     if (switchCount > 2) {
-      alert("Test terminated due to tab switching!");
+      alert("Test terminated due to tab switching");
       submitTest();
     }
   }
@@ -68,15 +68,16 @@ document.addEventListener("visibilitychange", () => {
 
 function submitTest() {
   let score = 0;
-  questions.forEach((q,i)=>{
-    let ans = document.querySelector(input[name="q${i}"]:checked);
-    if(ans && parseInt(ans.value) === q.c) score++;
+  questions.forEach((q, i) => {
+    const ans = document.querySelector(input[name="q${i}"]:checked);
+    if (ans && Number(ans.value) === q.c) {
+      score++;
+    }
   });
-  alert("Test submitted!\nScore: " + score + "/" + questions.length +
-        "\nTab switches: " + switchCount);
-  location.reload();
+  alert(Score: ${score}/${questions.length}\nTab switches: ${switchCount});
 }
 </script>
 
 </body>
+
 </html>
