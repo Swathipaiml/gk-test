@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>GK Online Test</title>
+
 <style>
-body { font-family: Arial; background:#f4f6f8; padding:20px; }
-h2 { text-align:center; }
+body { font-family: Arial; padding:20px; }
 .question { margin-bottom:15px; }
 button { padding:10px 20px; font-size:16px; }
-#warning { color:red; font-weight:bold; }
 </style>
 </head>
 
@@ -16,53 +15,45 @@ button { padding:10px 20px; font-size:16px; }
 
 <h2>General Knowledge Test</h2>
 <p>⚠ Do NOT switch tabs/windows. Max allowed: 2</p>
-<p id="warning"></p>
 
 <div id="quiz"></div>
+
 <button onclick="submitTest()">Submit Test</button>
 
 <script>
+console.log("JS loaded");
+
 const questions = [
-  {q:"Capital of India?", a:["Mumbai","Delhi","Kolkata","Chennai"], c:1},
-  {q:"National animal of India?", a:["Lion","Tiger","Elephant","Leopard"], c:1},
-  {q:"Who invented computer?", a:["Newton","Charles Babbage","Edison","Einstein"], c:1},
-  {q:"Largest planet?", a:["Earth","Mars","Jupiter","Saturn"], c:2},
-  {q:"Currency of Japan?", a:["Yuan","Won","Yen","Dollar"], c:2}
+  { q: "Capital of India?", options: ["Mumbai","Delhi","Kolkata","Chennai"], correct: 1 },
+  { q: "National animal of India?", options: ["Lion","Tiger","Elephant","Leopard"], correct: 1 },
+  { q: "Largest planet?", options: ["Earth","Mars","Jupiter","Saturn"], correct: 2 }
 ];
 
-// shuffle questions
-questions.sort(() => Math.random() - 0.5);
+const quiz = document.getElementById("quiz");
 
-const quizDiv = document.getElementById("quiz");
-
-// render questions
 questions.forEach((item, index) => {
-  const block = document.createElement("div");
-  block.className = "question";
+  const div = document.createElement("div");
+  div.className = "question";
 
   let html = <p>${index + 1}. ${item.q}</p>;
-  item.a.forEach((opt, i) => {
+  item.options.forEach((opt, i) => {
     html += `
       <label>
-        <input type="radio" name="q${index}" value="${i}"> ${opt}
+        <input type="radio" name="q${index}" value="${i}">
+        ${opt}
       </label><br>
     `;
   });
 
-  block.innerHTML = html;
-  quizDiv.appendChild(block);
+  div.innerHTML = html;
+  quiz.appendChild(div);
 });
 
-// tab switch detection
 let switchCount = 0;
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     switchCount++;
-    alert("Tab switched! Count: " + switchCount);
-    if (switchCount > 2) {
-      alert("Test terminated due to tab switching");
-      submitTest();
-    }
+    alert("Tab switched: " + switchCount);
   }
 });
 
@@ -70,14 +61,12 @@ function submitTest() {
   let score = 0;
   questions.forEach((q, i) => {
     const ans = document.querySelector(input[name="q${i}"]:checked);
-    if (ans && Number(ans.value) === q.c) {
-      score++;
-    }
+    if (ans && Number(ans.value) === q.correct) score++;
   });
-  alert(Score: ${score}/${questions.length}\nTab switches: ${switchCount});
+
+  alert("Score: " + score + "/" + questions.length);
 }
 </script>
 
 </body>
-
 </html>
