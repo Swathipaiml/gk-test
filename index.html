@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GK Online Test</title>
+<style>
+body { font-family: Arial; background:#f4f6f8; padding:20px; }
+h2 { text-align:center; }
+.question { margin-bottom:15px; }
+button { padding:10px 20px; font-size:16px; }
+#warning { color:red; font-weight:bold; }
+</style>
+</head>
+
+<body>
+
+<h2>General Knowledge Test</h2>
+<p>⚠ Do NOT switch tabs/windows. Max allowed: 2</p>
+<p id="warning"></p>
+
+<div id="quiz"></div>
+<button onclick="submitTest()">Submit Test</button>
+
+<script>
+const questions = [
+  {q:"Capital of India?", a:["Mumbai","Delhi","Kolkata","Chennai"], c:1},
+  {q:"National animal of India?", a:["Lion","Tiger","Elephant","Leopard"], c:1},
+  {q:"Who invented computer?", a:["Newton","Charles Babbage","Edison","Einstein"], c:1},
+  {q:"Largest planet?", a:["Earth","Mars","Jupiter","Saturn"], c:2},
+  {q:"Currency of Japan?", a:["Yuan","Won","Yen","Dollar"], c:2},
+  {q:"Fastest land animal?", a:["Lion","Cheetah","Tiger","Horse"], c:1},
+  {q:"Taj Mahal is in?", a:["Delhi","Agra","Jaipur","Lucknow"], c:1},
+  {q:"National bird of India?", a:["Peacock","Parrot","Crow","Eagle"], c:0},
+  {q:"Who is Father of Nation?", a:["Nehru","Gandhi","Patel","Bose"], c:1},
+  {q:"Sun rises in?", a:["West","East","North","South"], c:1}
+];
+
+// Randomize questions
+questions.sort(() => Math.random() - 0.5);
+
+let quizDiv = document.getElementById("quiz");
+
+questions.forEach((q,i)=>{
+  quizDiv.innerHTML += `
+    <div class="question">
+      <p>${i+1}. ${q.q}</p>
+      ${q.a.map((opt,j)=>`
+        <label>
+          <input type="radio" name="q${i}" value="${j}"> ${opt}
+        </label><br>`).join("")}
+    </div>`;
+});
+
+// TAB SWITCH DETECTION
+let switchCount = 0;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    switchCount++;
+    document.getElementById("warning").innerText =
+      "Tab switched: " + switchCount;
+
+    if (switchCount > 2) {
+      alert("Test terminated due to tab switching!");
+      submitTest();
+    }
+  }
+});
+
+function submitTest() {
+  let score = 0;
+  questions.forEach((q,i)=>{
+    let ans = document.querySelector(input[name="q${i}"]:checked);
+    if(ans && parseInt(ans.value) === q.c) score++;
+  });
+  alert("Test submitted!\nScore: " + score + "/" + questions.length +
+        "\nTab switches: " + switchCount);
+  location.reload();
+}
+</script>
+
+</body>
+</html>
